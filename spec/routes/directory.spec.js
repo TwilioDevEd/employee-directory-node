@@ -29,33 +29,52 @@ describe('directory route', function () {
 
     it('should return not found', function (done) {
       var testApp = supertest(app);
-      testApp
-        .post('/directory/search/')
-        .send({
-          Body: 'Yyy'
-        })
-        .end(function(err, res){
-          expect(res.statusCode).to.equal(200);
-          var $ = cheerio.load(res.text);
-          expect($('message').text()).to.equal('We did not find the employee you\'re looking for');
-          done();
-        });
+      testApp.post('/directory/search/')
+      .send({
+        Body: 'Yyy'
+      })
+      .end(function(err, res){
+        expect(res.statusCode).to.equal(200);
+        var $ = cheerio.load(res.text);
+        expect($('message').text()).to.equal('We did not find the employee you\'re looking for');
+        done();
+      });
     });
 
     it('should return a single employee', function (done) {
       var testApp = supertest(app);
+      testApp.post('/directory/search/')
+      .send({
+        Body: 'Wolverine'
+      })
+      .end(function(err, res) {
+        expect(res.statusCode).to.equal(200);
+        var $ = cheerio.load(res.text);
+        expect($('body').text()).to.equal('Wolverine\n+14155559718\nWolverine@heroes.example.com');
+        expect($('media').text()).to.equal('http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg');
+        done();
+      });
+    });
+
+    it('should return multiple employees', function (done) {
+      var testApp = supertest(app);
       testApp
-        .post('/directory/search/')
-        .send({
-          Body: 'Wolverine'
-        })
-        .end(function(err, res) {
-          expect(res.statusCode).to.equal(200);
-          var $ = cheerio.load(res.text);
-          expect($('body').text()).to.equal('Wolverine\n+14155559718\nWolverine@heroes.example.com');
-          expect($('media').text()).to.equal('http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg');
-          done();
-        });
+      .post('/directory/search/')
+      .send({
+        Body: 'Thor'
+      })
+      .end(function(err, res) {
+        expect(res.statusCode).to.equal(200);
+        var $ = cheerio.load(res.text);
+        expect($('message').text()).to.equal(
+          'We found multiple people, reply with:\n' +
+          '1 for Thor Girl\n' +
+          '2 for Frog Thor\n' +
+          '3 for Thor\n' +
+          'Or start over'
+        );
+        done();
+      });
     });
   });
 });
