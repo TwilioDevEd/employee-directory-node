@@ -42,18 +42,18 @@ describe('directory route', function () {
         });
     });
 
-    it.skip('should return a single employee', function (done) {
+    it('should return a single employee', function (done) {
       var testApp = supertest(app);
       testApp
         .post('/directory/search/')
         .send({
-          Body: 'Thor'
+          Body: 'Wolverine'
         })
         .end(function(err, res) {
           expect(res.statusCode).to.equal(200);
           var $ = cheerio.load(res.text);
-          expect($('body.message').text()).to.equal('Thor\n+14155559999\nthor@asgard.example.com');
-          expect($('body.media').text()).to.equal('http://i.imgur.com/kXi5u8w.jpg');
+          expect($('body').text()).to.equal('Wolverine\n+14155559718\nWolverine@heroes.example.com');
+          expect($('media').text()).to.equal('http://i.annihil.us/u/prod/marvel/i/mg/2/60/537bcaef0f6cf.jpg');
           done();
         });
     });
