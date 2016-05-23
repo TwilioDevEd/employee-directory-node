@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('employee-directory-node:server');
 var http = require('http');
+var mongoose = require('mongoose');
+var config = require('./config');
 
 /**
  * Get port from environment and store in Express.
@@ -89,3 +91,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+mongoose.connect(config.dbConnection);
+mongoose.Promise = require('bluebird');

@@ -23,7 +23,7 @@ describe('directory route', function () {
       Employee.remove({}, function() {
         Employee.create(employees, function(err, result) {
           done();
-        });      
+        });
       });
     });
 
