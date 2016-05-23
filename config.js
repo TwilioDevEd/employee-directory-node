@@ -7,7 +7,7 @@ var dbConnection = function() {
     return 'mongodb://localhost/test';
   }
 
-  return 'mongodb://localhost/warm-transfer';
+  return 'mongodb://localhost/employee-directory';
 };
 
 config.dbConnection = dbConnection();

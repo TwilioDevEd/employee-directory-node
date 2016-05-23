@@ -7,7 +7,10 @@ var expect = require('chai').expect
   , mongoose = require('mongoose')
   , sinon = require('sinon')
   , mockery = require('mockery')
-  , config = require('../../config');
+  , config = require('../../config')
+  , Employee = require('../../models/employee')
+  , employees = require('../../models/seed-data')
+  ;
 
 describe('directory route', function () {
   before(function (done) {
@@ -19,11 +22,17 @@ describe('directory route', function () {
   });
 
   describe('POST /directory/search/', function () {
+    beforeEach(function (done) {
+      Employee.remove({}, done);
+    });
+
     it('responds with 200', function (done) {
-      var testApp = supertest(app);
-      testApp
-        .post('/directory/search/')
-        .expect(200, done);
+      Employee.create(employees, function(err, result) {
+        var testApp = supertest(app);
+        testApp
+          .post('/directory/search/')
+          .expect(200, done);
+      })
     });
   });
 });
