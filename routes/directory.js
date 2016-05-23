@@ -12,7 +12,6 @@ router.post('/search/', function(req, res, next) {
   var body = req.body.Body;
   res.type('text/xml');
 
-  var resp = new twilio.TwimlResponse();
   if (parseInt(body)) {
     var cachedEmployees = req.cookies.cachedEmployees;
     employeeFinder.findById(cachedEmployees[body], function(err, employee) {
@@ -21,8 +20,7 @@ router.post('/search/', function(req, res, next) {
   } else {
     employeeFinder.findByName(body, function(err, employees) {
       if (employees.length == 0) {
-        resp.message('We did not find the employee you\'re looking for');
-        res.send(resp.toString());
+        res.send(twimlGenerator.notFound().toString());
       } else if (employees.length == 1) {
         res.send(twimlGenerator.singleEmployee(employees[0]).toString());
       } else {
