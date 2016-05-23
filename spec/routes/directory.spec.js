@@ -5,12 +5,9 @@ var expect = require('chai').expect
   , cheerio = require('cheerio')
   , app = require('../../app')
   , mongoose = require('mongoose')
-  , sinon = require('sinon')
-  , mockery = require('mockery')
   , config = require('../../config')
   , Employee = require('../../models/employee')
-  , employees = require('../../models/seed-data')
-  ;
+  , employees = require('../../models/seed-data');
 
 describe('directory route', function () {
   before(function (done) {
@@ -23,16 +20,26 @@ describe('directory route', function () {
 
   describe('POST /directory/search/', function () {
     beforeEach(function (done) {
-      Employee.remove({}, done);
+      Employee.remove({}, function() {
+        Employee.create(employees, function(err, result) {
+          done();
+        });      
+      });
     });
 
-    it('responds with 200', function (done) {
-      Employee.create(employees, function(err, result) {
-        var testApp = supertest(app);
-        testApp
-          .post('/directory/search/')
-          .expect(200, done);
-      })
+    it('should return not found', function (done) {
+      var testApp = supertest(app);
+      testApp
+        .post('/directory/search/')
+        .send({
+          Body: 'Yyy'
+        })
+        .end(function(err, res){
+          expect(res.statusCode).to.equal(200);
+          var $ = cheerio.load(res.text);
+          expect($('message').text()).to.equal('We did not find the employee you\'re looking for');
+          done();
+        });
     });
   });
 });
