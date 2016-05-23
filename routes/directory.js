@@ -16,7 +16,6 @@ router.post('/search/', function(req, res, next) {
   if (parseInt(body)) {
     var cachedEmployees = req.cookies.cachedEmployees;
     employeeFinder.findById(cachedEmployees[body], function(err, employee) {
-      res.type('text/xml');
       res.send(twimlGenerator.singleEmployee(employee).toString());
     });
   } else {
@@ -27,26 +26,13 @@ router.post('/search/', function(req, res, next) {
       } else if (employees.length == 1) {
         res.send(twimlGenerator.singleEmployee(employees[0]).toString());
       } else {
-        var options = _.map(employees, function(employee, index) {
-          var option = index + 1;
-          return {
-            option: option,
-            fullName: employee.fullName,
-            id: employee.id,
-            message: `\n${option} for ${employee.fullName}`
-          };
+        var options = _.map(employees, function(it, index) {
+          return { option: index + 1, fullName: it.fullName, id: it.id };
         });
-
-        var optionsMessage = _.reduce(options, function(memo, it) {
-          return memo += it.message;
-        }, '');
-
-        resp.message(`We found multiple people, reply with:${optionsMessage}\nOr start over`);
-
         var cachedEmployees = _.object(_.map(options, function(it){return [it.option, it.id]}));
-
         res.cookie('cachedEmployees', cachedEmployees, { maxAge: 1000 * 60 * 60 });
-        res.send(resp.toString());
+
+        res.send(twimlGenerator.multipleEmployees(options).toString());
       }
     });
   }

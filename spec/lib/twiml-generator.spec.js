@@ -21,4 +21,31 @@ describe('twiml-generator', function () {
     });
   });
 
+  describe('#multipleEmployees', function () {
+    it('generates TwiML response for multiple employees', function () {
+      var employees = [
+        {
+          'option': 1,
+          'fullName' : 'Thor'
+        },
+        {
+          'option': 2,
+          'fullName' : 'Spider-man'
+        },
+        {
+          'option': 3,
+          'fullName' : 'Wolverine'
+        }
+      ];
+
+      var twimlResponse = twimlGenerator.multipleEmployees(employees);
+      var $ = cheerio.load(twimlResponse.toString());
+      expect($('Message').text()).to.equal(
+`We found multiple people, reply with:
+1 for Thor
+2 for Spider-man
+3 for Wolverine
+Or start over`);
+    });
+  });
 });
