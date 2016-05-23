@@ -8,31 +8,55 @@ var express = require('express')
 
 // POST /directory/search/
 router.post('/search/', function(req, res, next) {
-  var name = req.body.Body;
-  employeeFinder.findByName(name, function(err, employees) {
-    var resp = new twilio.TwimlResponse();
-    if (employees.length == 0) {
-      resp.message('We did not find the employee you\'re looking for');
-    } else if (employees.length == 1) {
-      var employee = employees[0];
+  var body = req.body.Body;
+
+  var resp = new twilio.TwimlResponse();
+  if (parseInt(body)) {
+    var cachedEmployees = req.cookies.cachedEmployees;
+    employeeFinder.findById(cachedEmployees[body], function(err, employee) {
       resp.message(function() {
         this.body(`${employee.fullName}\n${employee.phoneNumber}\n${employee.email}`);
         this.media(employee.imageUrl);
       });
-    } else {
-      var options = _.chain(employees)
-        .map(function(employee, index) {
-          return `\n${index + 1} for ${employee.fullName}`;
-        })
-        .reduce(function(memo, employee) {
-          return memo += employee;
-        }).value();
+      res.type('text/xml');
+      res.send(resp.toString());
+    });
+    
+  } else {
+    employeeFinder.findByName(body, function(err, employees) {
+      if (employees.length == 0) {
+        resp.message('We did not find the employee you\'re looking for');
+      } else if (employees.length == 1) {
+        var employee = employees[0];
+        resp.message(function() {
+          this.body(`${employee.fullName}\n${employee.phoneNumber}\n${employee.email}`);
+          this.media(employee.imageUrl);
+        });
+      } else {
+        var options = _.map(employees, function(employee, index) {
+          var option = index + 1;
+          return {
+            option: option,
+            fullName: employee.fullName,
+            id: employee.id,
+            message: `\n${option} for ${employee.fullName}`
+          };
+        });
 
-      resp.message(`We found multiple people, reply with:${options}\nOr start over`);
-    }
-    res.type('text/xml');
-    res.send(resp.toString());
-  })
+        var optionsMessage = _.reduce(options, function(memo, it) {
+          return memo += it.message;
+        }, '');
+
+        resp.message(`We found multiple people, reply with:${optionsMessage}\nOr start over`);
+
+        var cachedEmployees = _.object(_.map(options, function(it){return [it.option, it.id]}));
+
+        res.cookie('cachedEmployees', cachedEmployees, { maxAge: 1000 * 60 * 60 });
+      }
+      res.type('text/xml');
+      res.send(resp.toString());
+    });
+  }
 });
 
 module.exports = router;
