@@ -1,11 +1,15 @@
 'use strict';
 
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+  , router = express.Router()
+  , twilio = require('twilio');
 
-// search employees
+// POST /directory/search/
 router.post('/search/', function(req, res, next) {
-  res.send('respond with a resource');
+  var resp = new twilio.TwimlResponse();
+  resp.message('We did not find the employee you\'re looking for');
+  res.type('text/xml');
+  res.send(resp.toString());
 });
 
 module.exports = router;
