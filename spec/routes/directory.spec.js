@@ -41,5 +41,21 @@ describe('directory route', function () {
           done();
         });
     });
+
+    it.skip('should return a single employee', function (done) {
+      var testApp = supertest(app);
+      testApp
+        .post('/directory/search/')
+        .send({
+          Body: 'Thor'
+        })
+        .end(function(err, res) {
+          expect(res.statusCode).to.equal(200);
+          var $ = cheerio.load(res.text);
+          expect($('body.message').text()).to.equal('Thor\n+14155559999\nthor@asgard.example.com');
+          expect($('body.media').text()).to.equal('http://i.imgur.com/kXi5u8w.jpg');
+          done();
+        });
+    });
   });
 });
