@@ -27,12 +27,6 @@ This project is build using [Express](http://expressjs.com/) web framework and d
    $ npm test
    ```
 
-1. Validate your code.
-
-   ```bash
-   $ npm run jshint
-   ```
-
 1. Start the server.
 
    ```bash
