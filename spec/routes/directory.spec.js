@@ -59,11 +59,11 @@ describe('directory route', function () {
           expect(res.statusCode).to.equal(200);
           var $ = cheerio.load(res.text);
           expect($('message').text()).to.equal(
-            'We found multiple people, reply with:\n' +
-            '1 for Thor Girl\n' +
-            '2 for Frog Thor\n' +
-            '3 for Thor\n' +
-            'Or start over'
+`We found multiple people, reply with:
+1 for Thor Girl
+2 for Frog Thor
+3 for Thor
+Or start over`
           );
           done();
         });
