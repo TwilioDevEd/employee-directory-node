@@ -62,6 +62,8 @@ This project is build using [Express](http://expressjs.com/) web framework and d
   ```
   http://<sub-domain>.ngrok.io/directory/search
   ```
+  
+  ![Configure SMS](http://howtodocs.s3.amazonaws.com/twilio-number-config-all-med.gif)
 
 ### How To Demo
 1. Text your twilio number the name "Thor".
@@ -82,8 +84,7 @@ This project is build using [Express](http://expressjs.com/) web framework and d
    +14155559999
    thor@asgard.example.com
    [the image goes here]
-
-  ![Configure SMS](http://howtodocs.s3.amazonaws.com/twilio-number-config-all-med.gif)
+  ```
 
 ## Meta
 
