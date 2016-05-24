@@ -12,11 +12,17 @@ router.post('/search/', function(req, res, next) {
   var body = req.body.Body;
   res.type('text/xml');
 
-  if (parseInt(body)) {
+  if (req.cookies.cachedEmployees && parseInt(body)) {
     var cachedEmployees = req.cookies.cachedEmployees;
-    employeeFinder.findById(cachedEmployees[body], function(err, employee) {
-      res.send(twimlGenerator.singleEmployee(employee).toString());
-    });
+    var employeeId = cachedEmployees[body];
+    if (employeeId === undefined) {
+      res.send(twimlGenerator.notFound().toString());
+    } else {
+      employeeFinder.findById(employeeId, function(err, employee) {
+        res.send(twimlGenerator.singleEmployee(employee).toString());
+      });
+      res.clearCookie('cachedEmployees');
+    }
   } else {
     employeeFinder.findByName(body, function(err, employees) {
       if (employees.length == 0) {

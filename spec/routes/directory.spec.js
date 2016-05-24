@@ -27,7 +27,7 @@ describe('directory route', function () {
       });
     });
 
-    it('should return not found', function (done) {
+    it('returns not found', function (done) {
       var testApp = supertest(app);
       testApp.post('/directory/search/')
       .send({
@@ -41,7 +41,7 @@ describe('directory route', function () {
       });
     });
 
-    it('should return a single employee', function (done) {
+    it('returns a single employee', function (done) {
       var testApp = supertest(app);
       testApp.post('/directory/search/')
         .send({
@@ -56,7 +56,7 @@ describe('directory route', function () {
         });
     });
 
-    it('should return multiple employees', function (done) {
+    it('returns multiple employees', function (done) {
       var testApp = supertest(app);
       testApp.post('/directory/search/')
         .send({
@@ -76,7 +76,7 @@ describe('directory route', function () {
         });
     });
 
-    it('should return multiple employees and choose Thor', function (done) {
+    it('chooses Thor from multiples employees', function (done) {
       var testApp = supertest(app);
       Employee.findOne({'fullName': 'Thor'}, function(err, result) {
         var thorId = result.id.toString();
@@ -87,9 +87,27 @@ describe('directory route', function () {
           .set('Cookie', 'cachedEmployees=j%3A%7B%221%22%3A%22'+thorId+'%22%2C%222%22%3A%2257436471180bd66f5bae5e02%22%2C%223%22%3A%2257436471180bd66f5bae5d3e%22%7D')
           .end(function(err, res) {
             expect(res.statusCode).to.equal(200);
+            expect(res.headers['set-cookie'][0]).to.equal('cachedEmployees=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT');
             var $ = cheerio.load(res.text);
             expect($('body').text()).to.equal('Thor\n+14155559999\nthor@asgard.example.com');
             expect($('media').text()).to.equal('http://i.imgur.com/kXi5u8w.jpg');
+            done();
+          });
+      });
+    });
+
+    it('chooses non existent number from multiple employees', function (done) {
+      var testApp = supertest(app);
+      Employee.findOne({'fullName': 'Thor'}, function(err, result) {
+        var thorId = result.id.toString();
+        testApp.post('/directory/search/')
+          .send({
+            Body: '10'
+          })
+          .end(function(err, res) {
+            expect(res.statusCode).to.equal(200);
+            var $ = cheerio.load(res.text);
+            expect($('message').text()).to.equal('We did not find the employee you\'re looking for');
             done();
           });
       });
