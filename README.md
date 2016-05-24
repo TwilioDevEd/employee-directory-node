@@ -25,6 +25,12 @@ This project is build using [Express](http://expressjs.com/) web framework and d
    $ npm test
    ```
 
+1. Seed the database.
+
+   ```bash
+   $ npm run seed
+   ```
+
 1. Start the server.
 
    ```bash
