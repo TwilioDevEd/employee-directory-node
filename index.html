@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><title>Employee Directory Node</title><style>body, html {
+  height:100%;
+  width:100%;
+  padding:0;
+  margin:0;
+  overflow:hidden;
+  background-color:#ddd;
+}
+.wrapper {
+  height:100%;
+  width:100%;
+}</style><link rel="shortcut icon" href="//twilio.com/bundles/marketing/img/favicons/favicon.ico"><link rel="apple-touch-icon" href="//twilio.com/bundles/marketing/img/favicons/favicon_57.png"><link rel="apple-touch-icon" sizes="72x72" href="//twilio.com/bundles/marketing/img/favicons/favicon_72.png"><link rel="apple-touch-icon" sizes="114x114" href="//twilio.com/bundles/marketing/img/favicons/favicon_114.png"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"><link rel="stylesheet" href="viewsaurus.css"></head><body><div class="wrapper"><div id="viewsaurus" data-title="Employee Directory Node"><div class="saurus-panes"><div class="saurus-prose"><div class="saurus-prose-header"><div class="title-outer"><span class="step-title">Employee Directory Node</span></div></div><div class="saurus-nav-buttons"><div class="saurus-nav-button nav-overview"><div class="saurus-nav-button-inner"><i class="fa fa-fw fa-list"></i></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-previous"><div class="saurus-nav-button-inner"><a href=""> <i class="fa fa-fw fa-play fa-rotate-180"></i></a></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-next clickable"><div class="saurus-nav-button-inner"><a href="#1"> <i class="fa fa-fw fa-play"></i></a></div></div><div class="saurus-next-title"><span class="next-title-inner"></span></div></div><div class="saurus-progress-bar"></div><div class="saurus-start"><p>Use Twilio to accept SMS messages and turn them into queries against a MongoDB database. This example functions as an Employee Directory where a mobile phone user can send a text message with a partial string of a person's name and it will return their picture and contact information (e-mail address and phone number).</p><a href="#0">Start Tutorial</a></div><div class="saurus-content"><div data-title="Employee Directory Nodes" class="chapter"><div data-title="What Are We Building?" data-file="models/employee.js" class="step"><h2 id="employee-directory">Employee Directory</h2>
+<p>Learn how to implement an employee directory that you can query using SMS.
+Request information from anyone at your company just by sending a text message
+to a <a href="//www.twilio.com/help/faq/phone-numbers">Twilio Number</a></p>
+<p>Here is how it works at a high level:</p>
+<ul>
+<li>The user sends a SMS with an Employee&#39;s name to the Twilio number.</li>
+<li>The user receives information for the requested Employee.</li>
+</ul>
+<p>Let&#39;s get started!</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//expressjs.com/en/starter/installing.html">Getting Started with Express</a></li>
+<li><a href="//www.twilio.com/docs/libraries/node">Twilio Node Helper Library</a></li>
+</ul>
+</div><div data-title="Create an Employee Model" data-file="models/employee.js" class="step"><h2 id="create-an-employee-model">Create an Employee Model</h2>
+<p>The first thing we need is a collection of employees. We will be using <a href="//mongoosejs.com">mongoose</a> for this. </p>
+<p>Our employee entity has a few fields for contact information, including their name, phone number, and a public URL containing an image of them.</p>
+<p>Now, let&#39;s build a module for finding employees.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//mongoosejs.com">Mongoose</a></li>
+</ul>
+</div><div data-title="Search for an Employee by Name" data-file="lib/employee-finder.js" data-highlight="5-17" class="step"><h2 id="search-for-an-employee-by-name">Search for an Employee by Name</h2>
+<p>The <code>employee-finder</code> module allows us to search the database for employees either by name or by their unique database identifier. When searching by name, we&#39;ll return a list of employees whose name might match a search query, or just one if we find an exact match. If we know the ID of the employee we&#39;re looking for, we can return it right away.</p>
+<p>We&#39;ll use this search functionality when responding to an SMS from a user, which we&#39;ll look at next.</p>
+</div><div data-title="Receive an Incoming SMS" data-file="routes/directory.js" data-highlight="10-11,15,26-32,39" class="step"><h2 id="receive-an-incoming-sms">Receive an Incoming SMS</h2>
+<p>When your number receives an SMS message, <a href="//www.twilio.com/docs/api/twiml/sms/twilio_request">Twilio will send an HTTP POST request to our application</a>. This will be handled by the <code>/directory/search/</code> route.</p>
+<p>We check for the cookie and numeric input (line 15/more on that later) or perform a query for the desired employee. The results are packaged up as a <a href="//www.twilio.com/docs/api/twiml">TwiML response</a> through <code>twiml-generator</code> module and sent back to Twilio and, in turn, the original sender of the SMS.</p>
+<p>Let&#39;s take a closer look at building the response.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/api/twiml/sms/twilio_request">How Twilio Passes Data to Your Application</a></li>
+<li><a href="//www.twilio.com/docs/api/twiml">TwiML: The Twilio Markup Language</a></li>
+</ul>
+</div><div data-title="Respond with a Single Match for an Employee Name" data-file="lib/twiml-generator.js" data-highlight="12-19" class="step"><h2 id="respond-with-a-single-match-for-an-employee-name">Respond with a Single Match for an Employee Name</h2>
+<p>Let&#39;s say it finds a single employee matching the text message. In this case, we simply write out a response that contains the employee&#39;s contact information, including a photo, making our response a MMS message.</p>
+<p>A single matching employee isn&#39;t the only scenario, however.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/api/twiml/sms/message">Twilio Docs: &lt;Message&gt; Verb</a></li>
+</ul>
+</div><div data-title="What If No Employee or Multiple Employees Match?" data-file="lib/twiml-generator.js" data-highlight="6-10, 21-29" class="step"><h2 id="what-if-no-employee-or-multiple-employees-match-">What If No Employee or Multiple Employees Match?</h2>
+<p>If we don&#39;t find any employees, we can simply return a &quot;Not found&quot; message.</p>
+<p>What about multiple matches? For this case, we want to return a list of the matching employees&#39; names along with an incrementing number the end user can use to make their selection. For example, if someone searched for &quot;Man&quot; they might get something like:</p>
+<pre><code>We found: 1-Spider-Man, 2-Iron Man
+ - Reply with # of desired person
+</code></pre><p>Let&#39;s see how do we store these options are stored next.</p>
+</div><div data-title="Caching List of Possible Matches" data-file="routes/directory.js" data-highlight="33-39" class="step"><h2 id="caching-list-of-possible-matches">Caching List of Possible Matches</h2>
+<p>For the message text returned to the user, we build a numbered menu of possible matches.</p>
+<p>Our app needs to remember &mdash; between SMS messages from the user &mdash; the mapping of the 1, 2, 3 selection numbers to the actual unique ID&#39;s of employees. You will notice we are placing them in a cookie, which <a href="//www.twilio.com/help/faq/twilio-basics/how-do-twilio-cookies-work">Twilio will send back with every HTTP request to our application</a>.</p>
+<p>Now let&#39;s look at how to handle the user&#39;s response to this menu of choices.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/help/faq/twilio-basics/how-do-twilio-cookies-work">How Do Twilio Cookies Work?</a></li>
+<li><a href="//expressjs.com/en/api.html#res.cookie">Express Cookies Overview</a></li>
+</ul>
+</div><div data-title="Return Employee Contact Information by Number Choice" data-file="routes/directory.js" data-highlight="15-25" class="step"><h2 id="return-employee-contact-information-by-number-choice">Return Employee Contact Information by Number Choice</h2>
+<p>When we receive an SMS message, we check whether:</p>
+<ul>
+<li>The body of the text is, in fact, a number.</li>
+<li>A cookie exists with the mapping of numbers to id&#39;s.</li>
+</ul>
+<p>If any of those checks fail, then we&#39;ll simply proceed with our typical name lookup.</p>
+<p>Otherwise, it will check if the chosen option exists in the cookie. If it does, we return the single employee that matches their selection.</p>
+<p>Only thing left to do is celebrate.</p>
+<p><img src="//howtodocs.s3.amazonaws.com/employee-directory/win.gif" alt="winning"></p>
+</div><div data-title="Where to Next?" data-file="models/employee.js" class="step"><h2 id="where-to-next-">Where to Next?</h2>
+<p>That&#39;s it! We have just implemented employee directory using Express.
+Now you can get your employee&#39;s information by texting a Twilio number.</p>
+<p>If you&#39;re a Node.js developer working with Twilio, you might also enjoy these
+tutorials:</p>
+<p><a href="//www.twilio.com/docs/tutorials/walkthrough/browser-calls/node/express"><strong>Browser-Calls</strong></a></p>
+<p>Learn how to use Twilio Client to make browser-to-phone and browser-to-browser calls with ease.</p>
+<p><a href="//www.twilio.com/docs/tutorials/walkthrough/eta-notifications/node/express"><strong>ETA-Notifications</strong></a></p>
+<p>Learn how to implement ETA Notifications using Express and Twilio.</p>
+<p>Thanks for checking this tutorial out! If you have any feedback
+to share with us, we&#39;d love to hear it.
+<a href="//www.twilio.com/help/contact">Contact support</a> to let us know what you think.</p>
+</div></div>
+<div class="saurus-files" style="display:none;"><textarea class="saurus-file" data-file="models/employee.js" data-mode="javascript">J3VzZSBzdHJpY3QnOwoKdmFyIG1vbmdvb3NlID0gcmVxdWlyZSgnbW9uZ29vc2UnKTsKCnZhciBFbXBsb3llZSA9IG5ldyBtb25nb29zZS5TY2hlbWEoewogIGZ1bGxOYW1lOiBTdHJpbmcsCiAgZW1haWw6IFN0cmluZywKICBwaG9uZU51bWJlcjogU3RyaW5nLAogIGltYWdlVXJsOiBTdHJpbmcKfSk7Cgptb2R1bGUuZXhwb3J0cyA9IG1vbmdvb3NlLm1vZGVsKCdlbXBsb3llZScsIEVtcGxveWVlKTsK</textarea>
+<textarea class="saurus-file" data-file="lib/employee-finder.js" data-mode="javascript">J3VzZSBzdHJpY3QnOwoKdmFyIEVtcGxveWVlID0gcmVxdWlyZSgnLi4vbW9kZWxzL2VtcGxveWVlJyk7Cgp2YXIgZmluZEJ5TmFtZSA9IGZ1bmN0aW9uKG5hbWUsIGNhbGxiYWNrKSB7CiAgRW1wbG95ZWUuZmluZCh7CiAgICAiZnVsbE5hbWUiOiB7CiAgICAgICIkcmVnZXgiOiBuYW1lLCAiJG9wdGlvbnMiOiAiaSIKICAgIH0KICB9LCBjYWxsYmFjayk7Cn07Cgp2YXIgZmluZEJ5SWQgPSBmdW5jdGlvbihpZCwgY2FsbGJhY2spIHsKICBFbXBsb3llZS5maW5kT25lKHsKICAgICJfaWQiOiBpZAogIH0sIGNhbGxiYWNrKTsKfTsKCm1vZHVsZS5leHBvcnRzLmZpbmRCeU5hbWUgPSBmaW5kQnlOYW1lOwoKbW9kdWxlLmV4cG9ydHMuZmluZEJ5SWQgPSBmaW5kQnlJZDsK</textarea>
+<textarea class="saurus-file" data-file="routes/directory.js" data-mode="javascript">J3VzZSBzdHJpY3QnOwoKdmFyIGV4cHJlc3MgPSByZXF1aXJlKCdleHByZXNzJykKICAsIHJvdXRlciA9IGV4cHJlc3MuUm91dGVyKCkKICAsIHR3aWxpbyA9IHJlcXVpcmUoJ3R3aWxpbycpCiAgLCBlbXBsb3llZUZpbmRlciA9IHJlcXVpcmUoJy4uL2xpYi9lbXBsb3llZS1maW5kZXInKQogICwgXyA9ICByZXF1aXJlKCd1bmRlcnNjb3JlJykKICAsIHR3aW1sR2VuZXJhdG9yID0gcmVxdWlyZSgnLi4vbGliL3R3aW1sLWdlbmVyYXRvcicpOwoKLy8gUE9TVCAvZGlyZWN0b3J5L3NlYXJjaC8Kcm91dGVyLnBvc3QoJy9zZWFyY2gvJywgZnVuY3Rpb24ocmVxLCByZXMsIG5leHQpIHsKICB2YXIgYm9keSA9IHJlcS5ib2R5LkJvZHk7CiAgcmVzLnR5cGUoJ3RleHQveG1sJyk7CgogIGlmIChyZXEuY29va2llcy5jYWNoZWRFbXBsb3llZXMgIT09IHVuZGVmaW5lZCAmJiAhaXNOYU4oYm9keSkpIHsKICAgIHZhciBjYWNoZWRFbXBsb3llZXMgPSByZXEuY29va2llcy5jYWNoZWRFbXBsb3llZXM7CiAgICB2YXIgZW1wbG95ZWVJZCA9IGNhY2hlZEVtcGxveWVlc1tib2R5XTsKICAgIGlmIChlbXBsb3llZUlkID09PSB1bmRlZmluZWQpIHsKICAgICAgcmVzLnNlbmQodHdpbWxHZW5lcmF0b3Iubm90Rm91bmQoKS50b1N0cmluZygpKTsKICAgIH0gZWxzZSB7CiAgICAgIGVtcGxveWVlRmluZGVyLmZpbmRCeUlkKGVtcGxveWVlSWQsIGZ1bmN0aW9uKGVyciwgZW1wbG95ZWUpIHsKICAgICAgICByZXMuY2xlYXJDb29raWUoJ2NhY2hlZEVtcGxveWVlcycpOwogICAgICAgIHJlcy5zZW5kKHR3aW1sR2VuZXJhdG9yLnNpbmdsZUVtcGxveWVlKGVtcGxveWVlKS50b1N0cmluZygpKTsKICAgICAgfSk7CiAgICB9CiAgfSBlbHNlIHsKICAgIGVtcGxveWVlRmluZGVyLmZpbmRCeU5hbWUoYm9keSwgZnVuY3Rpb24oZXJyLCBlbXBsb3llZXMpIHsKICAgICAgaWYgKGVtcGxveWVlcy5sZW5ndGggPT09IDApIHsKICAgICAgICByZXMuc2VuZCh0d2ltbEdlbmVyYXRvci5ub3RGb3VuZCgpLnRvU3RyaW5nKCkpOwogICAgICB9IGVsc2UgaWYgKGVtcGxveWVlcy5sZW5ndGggPT09IDEpIHsKICAgICAgICByZXMuc2VuZCh0d2ltbEdlbmVyYXRvci5zaW5nbGVFbXBsb3llZShlbXBsb3llZXNbMF0pLnRvU3RyaW5nKCkpOwogICAgICB9IGVsc2UgewogICAgICAgIHZhciBvcHRpb25zID0gXy5tYXAoZW1wbG95ZWVzLCBmdW5jdGlvbihpdCwgaW5kZXgpIHsKICAgICAgICAgIHJldHVybiB7IG9wdGlvbjogaW5kZXggKyAxLCBmdWxsTmFtZTogaXQuZnVsbE5hbWUsIGlkOiBpdC5pZCB9OwogICAgICAgIH0pOwogICAgICAgIHZhciBjYWNoZWRFbXBsb3llZXMgPSBfLm9iamVjdChfLm1hcChvcHRpb25zLCBmdW5jdGlvbihpdCkgeyByZXR1cm4gW2l0Lm9wdGlvbiwgaXQuaWRdOyB9KSk7CiAgICAgICAgcmVzLmNvb2tpZSgnY2FjaGVkRW1wbG95ZWVzJywgY2FjaGVkRW1wbG95ZWVzLCB7IG1heEFnZTogMTAwMCAqIDYwICogNjAgfSk7CgogICAgICAgIHJlcy5zZW5kKHR3aW1sR2VuZXJhdG9yLm11bHRpcGxlRW1wbG95ZWVzKG9wdGlvbnMpLnRvU3RyaW5nKCkpOwogICAgICB9CiAgICB9KTsKICB9Cn0pOwoKbW9kdWxlLmV4cG9ydHMgPSByb3V0ZXI7Cg==</textarea>
+<textarea class="saurus-file" data-file="lib/twiml-generator.js" data-mode="javascript">J3VzZSBzdHJpY3QnOwoKdmFyIHR3aWxpbyA9IHJlcXVpcmUoJ3R3aWxpbycpLAogIF8gPSByZXF1aXJlKCd1bmRlcnNjb3JlJyk7Cgp2YXIgbm90Rm91bmQgPSBmdW5jdGlvbigpIHsKICB2YXIgcmVzcCA9IG5ldyB0d2lsaW8uVHdpbWxSZXNwb25zZSgpOwogIHJlc3AubWVzc2FnZSgnV2UgZGlkIG5vdCBmaW5kIHRoZSBlbXBsb3llZSB5b3VcJ3JlIGxvb2tpbmcgZm9yJyk7CiAgcmV0dXJuIHJlc3A7Cn07Cgp2YXIgc2luZ2xlRW1wbG95ZWUgPSBmdW5jdGlvbihlbXBsb3llZSkgewogIHZhciByZXNwID0gbmV3IHR3aWxpby5Ud2ltbFJlc3BvbnNlKCk7CiAgcmVzcC5tZXNzYWdlKGZ1bmN0aW9uKCkgewogICAgdGhpcy5ib2R5KGAke2VtcGxveWVlLmZ1bGxOYW1lfVxuJHtlbXBsb3llZS5waG9uZU51bWJlcn1cbiR7ZW1wbG95ZWUuZW1haWx9YCk7CiAgICB0aGlzLm1lZGlhKGVtcGxveWVlLmltYWdlVXJsKTsKICB9KTsKICByZXR1cm4gcmVzcDsKfTsKCnZhciBtdWx0aXBsZUVtcGxveWVlcyA9IGZ1bmN0aW9uKGVtcGxveWVlcykgewogIHZhciByZXNwID0gbmV3IHR3aWxpby5Ud2ltbFJlc3BvbnNlKCk7CiAgdmFyIG9wdGlvbnNNZXNzYWdlID0gXy5yZWR1Y2UoZW1wbG95ZWVzLCBmdW5jdGlvbihtZW1vLCBpdCkgewogICAgcmV0dXJuIG1lbW8gKz0gYFxuJHtpdC5vcHRpb259IGZvciAke2l0LmZ1bGxOYW1lfWA7CiAgfSwgJycpOwoKICByZXNwLm1lc3NhZ2UoYFdlIGZvdW5kIG11bHRpcGxlIHBlb3BsZSwgcmVwbHkgd2l0aDoke29wdGlvbnNNZXNzYWdlfVxuT3Igc3RhcnQgb3ZlcmApOwogIHJldHVybiByZXNwOwp9OwoKbW9kdWxlLmV4cG9ydHMubm90Rm91bmQgPSBub3RGb3VuZDsKCm1vZHVsZS5leHBvcnRzLnNpbmdsZUVtcGxveWVlID0gc2luZ2xlRW1wbG95ZWU7Cgptb2R1bGUuZXhwb3J0cy5tdWx0aXBsZUVtcGxveWVlcyA9IG11bHRpcGxlRW1wbG95ZWVzOwo=</textarea>
+</div>
+</div><div class="saurus-overview"><ul></ul></div></div><div class="saurus-code"><div class="file-path"><span class="crumb-container"></span><i class="fa fa-fw fa-folder"></i></div><div class="saurus-editor"></div></div><div class="saurus-explorer"><div class="saurus-file-list"></div><a href="https://github.com/TwilioDevEd/employee-directory-node" target="_blank" class="explorer-get-code"> <i class="fa fa-lg fa-github-square"> </i>View Code on GitHub</a></div></div></div></div><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script><script src="ace/ace.js"></script><script src="ace/theme-monokai.js"></script><script src="viewsaurus.js"></script></body></html>

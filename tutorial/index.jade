@@ -1,0 +1,174 @@
+.chapter(data-title='Employee Directory Nodes')
+  .step(
+    data-title='What Are We Building?',
+    data-file='models/employee.js')
+    :markdown
+      ## Employee Directory
+
+      Learn how to implement an employee directory that you can query using SMS.
+      Request information from anyone at your company just by sending a text message
+      to a [Twilio Number](//www.twilio.com/help/faq/phone-numbers)
+
+      Here is how it works at a high level:
+
+      - The user sends a SMS with an Employee's name to the Twilio number.
+      - The user receives information for the requested Employee.
+
+      Let's get started!
+
+      ---
+
+      **See Also:**
+      * [Getting Started with Express](//expressjs.com/en/starter/installing.html)
+      * [Twilio Node Helper Library](//www.twilio.com/docs/libraries/node)
+
+  .step(
+    data-title='Create an Employee Model',
+    data-file='models/employee.js')
+    :markdown
+      ## Create an Employee Model
+    
+      The first thing we need is a collection of employees. We will be using [mongoose][ef6cf] for this. 
+      
+      Our employee entity has a few fields for contact information, including their name, phone number, and a public URL containing an image of them.
+      
+      Now, let's build a module for finding employees.
+      
+      ---
+
+      **See Also:**
+      * [Mongoose][ef6cf]
+
+      [ef6cf]: //mongoosejs.com
+
+  .step(
+    data-title='Search for an Employee by Name',
+    data-file='lib/employee-finder.js',
+    data-highlight='5-17')
+    :markdown
+      ## Search for an Employee by Name
+      
+      The `employee-finder` module allows us to search the database for employees either by name or by their unique database identifier. When searching by name, we'll return a list of employees whose name might match a search query, or just one if we find an exact match. If we know the ID of the employee we're looking for, we can return it right away.
+
+      We'll use this search functionality when responding to an SMS from a user, which we'll look at next.
+
+  .step(
+    data-title='Receive an Incoming SMS', 
+    data-file='routes/directory.js',
+    data-highlight='10-11,15,26-32,39')
+    :markdown
+      ## Receive an Incoming SMS
+      
+      When your number receives an SMS message, [Twilio will send an HTTP POST request to our application][webhook]. This will be handled by the `/directory/search/` route.
+      
+      We check for the cookie and numeric input (line 15/more on that later) or perform a query for the desired employee. The results are packaged up as a [TwiML response][twiml] through `twiml-generator` module and sent back to Twilio and, in turn, the original sender of the SMS.
+      
+      Let's take a closer look at building the response.
+      
+      ---
+
+      **See Also:**
+      * [How Twilio Passes Data to Your Application][webhook]
+      * [TwiML: The Twilio Markup Language][twiml]
+
+      [webhook]:  //www.twilio.com/docs/api/twiml/sms/twilio_request
+      [twiml]: //www.twilio.com/docs/api/twiml
+
+  .step(
+    data-title='Respond with a Single Match for an Employee Name',
+    data-file='lib/twiml-generator.js',
+    data-highlight='12-19')
+    :markdown
+      ## Respond with a Single Match for an Employee Name
+    
+      Let's say it finds a single employee matching the text message. In this case, we simply write out a response that contains the employee's contact information, including a photo, making our response a MMS message.
+      
+      A single matching employee isn't the only scenario, however.
+      
+      ---
+
+      **See Also:**
+      * [Twilio Docs: <Message> Verb](//www.twilio.com/docs/api/twiml/sms/message)
+
+  .step(
+    data-title='What If No Employee or Multiple Employees Match?',
+    data-file='lib/twiml-generator.js',
+    data-highlight='6-10, 21-29')
+    :markdown
+      ## What If No Employee or Multiple Employees Match?
+    
+      If we don't find any employees, we can simply return a "Not found" message.
+      
+      What about multiple matches? For this case, we want to return a list of the matching employees' names along with an incrementing number the end user can use to make their selection. For example, if someone searched for "Man" they might get something like:
+      
+      ```
+      We found: 1-Spider-Man, 2-Iron Man
+       - Reply with # of desired person
+      ```
+      
+      Let's see how do we store these options are stored next.
+
+  .step(
+    data-title='Caching List of Possible Matches',
+    data-file='routes/directory.js',
+    data-highlight='33-39')
+    :markdown
+      ## Caching List of Possible Matches
+      
+      For the message text returned to the user, we build a numbered menu of possible matches.
+      
+      Our app needs to remember &mdash; between SMS messages from the user &mdash; the mapping of the 1, 2, 3 selection numbers to the actual unique ID's of employees. You will notice we are placing them in a cookie, which [Twilio will send back with every HTTP request to our application][twcookies].
+      
+      Now let's look at how to handle the user's response to this menu of choices.
+      
+      ---
+
+      **See Also:**
+      * [How Do Twilio Cookies Work?][twcookies]
+      * [Express Cookies Overview](//expressjs.com/en/api.html#res.cookie)
+      
+      [twcookies]: //www.twilio.com/help/faq/twilio-basics/how-do-twilio-cookies-work
+
+  .step(
+    data-title='Return Employee Contact Information by Number Choice',
+    data-file='routes/directory.js',
+    data-highlight='15-25')
+    :markdown
+      ## Return Employee Contact Information by Number Choice
+    
+      When we receive an SMS message, we check whether:
+      
+      * The body of the text is, in fact, a number.
+      * A cookie exists with the mapping of numbers to id's.
+      
+      If any of those checks fail, then we'll simply proceed with our typical name lookup.
+      
+      Otherwise, it will check if the chosen option exists in the cookie. If it does, we return the single employee that matches their selection.
+      
+      Only thing left to do is celebrate.
+      
+      ![winning](//howtodocs.s3.amazonaws.com/employee-directory/win.gif)
+
+  .step(
+    data-title='Where to Next?',
+    data-file='models/employee.js')
+    :markdown
+      ## Where to Next?
+
+      That's it! We have just implemented employee directory using Express.
+      Now you can get your employee's information by texting a Twilio number.
+
+      If you're a Node.js developer working with Twilio, you might also enjoy these
+      tutorials:
+
+      [**Browser-Calls**](//www.twilio.com/docs/tutorials/walkthrough/browser-calls/node/express)
+
+      Learn how to use Twilio Client to make browser-to-phone and browser-to-browser calls with ease.
+
+      [**ETA-Notifications**](//www.twilio.com/docs/tutorials/walkthrough/eta-notifications/node/express)
+
+      Learn how to implement ETA Notifications using Express and Twilio.
+
+      Thanks for checking this tutorial out! If you have any feedback
+      to share with us, we'd love to hear it.
+      [Contact support](//www.twilio.com/help/contact) to let us know what you think.
