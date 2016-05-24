@@ -19,9 +19,9 @@ router.post('/search/', function(req, res, next) {
       res.send(twimlGenerator.notFound().toString());
     } else {
       employeeFinder.findById(employeeId, function(err, employee) {
+        res.clearCookie('cachedEmployees');
         res.send(twimlGenerator.singleEmployee(employee).toString());
       });
-      res.clearCookie('cachedEmployees');
     }
   } else {
     employeeFinder.findByName(body, function(err, employees) {
