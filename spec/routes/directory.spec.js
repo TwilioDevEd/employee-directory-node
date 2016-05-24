@@ -1,22 +1,15 @@
 'use strict';
 
+require('../spec-helper');
+
 var expect = require('chai').expect
   , supertest = require('supertest')
   , cheerio = require('cheerio')
   , app = require('../../app')
-  , mongoose = require('mongoose')
-  , config = require('../../config')
   , Employee = require('../../models/employee')
   , employees = require('../../data');
 
 describe('directory route', function () {
-  before(function (done) {
-    mongoose.connect(config.dbConnection, done);
-  });
-
-  after(function (done) {
-    mongoose.disconnect(done);
-  });
 
   describe('POST /directory/search/', function () {
     beforeEach(function (done) {

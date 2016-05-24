@@ -12,7 +12,7 @@ router.post('/search/', function(req, res, next) {
   var body = req.body.Body;
   res.type('text/xml');
 
-  if (req.cookies.cachedEmployees && parseInt(body)) {
+  if (req.cookies.cachedEmployees !== undefined && parseInt(body) !== NaN) {
     var cachedEmployees = req.cookies.cachedEmployees;
     var employeeId = cachedEmployees[body];
     if (employeeId === undefined) {
