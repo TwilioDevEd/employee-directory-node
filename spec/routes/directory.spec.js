@@ -7,7 +7,7 @@ var expect = require('chai').expect
   , mongoose = require('mongoose')
   , config = require('../../config')
   , Employee = require('../../models/employee')
-  , employees = require('../../models/seed-data');
+  , employees = require('../../data');
 
 describe('directory route', function () {
   before(function (done) {
