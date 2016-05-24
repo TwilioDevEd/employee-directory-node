@@ -8,8 +8,6 @@
 
 Use Twilio to accept SMS messages and turn them into queries against a database. This example functions as an Employee Directory where a mobile phone user can send a text message with a partial string of a person's name and it will return their picture and contact information (e-mail address and phone number).
 
-[Read the full tutorial here!](https://www.twilio.com/docs/tutorials/walkthrough/employee-directory/node/express/)
-
 ## Local Development
 
 This project is build using [Express](http://expressjs.com/) web framework and depends on [MongoDB](https://www.mongodb.com).
