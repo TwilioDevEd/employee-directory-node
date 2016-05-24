@@ -7,7 +7,7 @@ var expect = require('chai').expect
   , cheerio = require('cheerio')
   , app = require('../../app')
   , Employee = require('../../models/employee')
-  , employees = require('../../data');
+  , employees = require('../../employees');
 
 describe('directory route', function () {
 
