@@ -1,4 +1,8 @@
-# Employee Directory with Node.js/Express
+<a href="https://www.twilio.com">
+  <img src="https://static0.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg" alt="Twilio" width="250" />
+</a>
+
+# Employee Directory
 
 [![Build Status](https://travis-ci.org/TwilioDevEd/employee-directory-node.svg?branch=master)](https://travis-ci.org/TwilioDevEd/employee-directory-node)
 
@@ -48,7 +52,7 @@ This project is build using [Node.js](https://nodejs.org) and depends on [MongoD
   Once ngrok is running, open up your browser and go to your ngrok URL. It will
   look something like this: `http://9a159ccf.ngrok.io`
 
-1. Configure Twilio to call your webhooks
+1. Configure Twilio to call your webhooks.
 
   You will also need to configure Twilio to call your application when calls are received
   on your _Twilio Number_. The **SMS & MMS Request URL** should look something like this:
@@ -58,7 +62,7 @@ This project is build using [Node.js](https://nodejs.org) and depends on [MongoD
   ```
 
 ### How To Demo
-1. Text your twilio number the name "Thor"
+1. Text your twilio number the name "Thor".
 1. Should get the following response:
 
    ```
@@ -68,7 +72,7 @@ This project is build using [Node.js](https://nodejs.org) and depends on [MongoD
    3 for Thor Girl
    Or start over
    ```
-1. Reply with 1
+1. Reply with 1.
 1. Should get the following response:
 
    ```
