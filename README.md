@@ -72,7 +72,7 @@ This project is build using [Node.js](https://nodejs.org) and depends on [MongoD
 1. Should get the following response:
 
    ```
-   Iron Man
+   Thor
    +14155559999
    thor@asgard.example.com
    [the image goes here]
