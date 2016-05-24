@@ -6,6 +6,14 @@ var expect = require('chai').expect
 
 describe('twiml-generator', function () {
 
+  describe('#notFound', function () {
+    it('generates TwiML response when employee query gets nothing', function () {
+      var twimlResponse = twimlGenerator.notFound();
+      var $ = cheerio.load(twimlResponse.toString());
+      expect($('Message').text()).to.equal('We did not find the employee you\'re looking for');
+    });
+  });
+
   describe('#singleEmployee', function () {
     it('generates TwiML response with employee content', function () {
       var employee = {
