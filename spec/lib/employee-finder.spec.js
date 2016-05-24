@@ -46,7 +46,7 @@ describe('employee-finder', function () {
     it('finds employee by id', function () {
       employeeFinder.findById('1111702403e641a82afe1111', function(err, doc) {
         expect(doc.fullName).to.equal('Spider-Man');
-      })
+      });
     });
   });
 
@@ -55,7 +55,7 @@ describe('employee-finder', function () {
       employeeFinder.findByName('name', function(err, docs) {
         expect(docs).to.include(spiderMan);
         expect(docs).to.include(ironMan);
-      })
+      }); 
     });
   });
 

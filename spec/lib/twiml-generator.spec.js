@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect
   , twimlGenerator = require('../../lib/twiml-generator')
-  , cheerio = require('cheerio')
+  , cheerio = require('cheerio');
 
 describe('twiml-generator', function () {
 
