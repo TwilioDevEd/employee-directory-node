@@ -40,6 +40,7 @@ This project is build using [Express](http://expressjs.com/) web framework and d
 1. Check it out at [http://localhost:3000](http://localhost:3000).
 
 ### Expose the Application to the Wider Internet
+
 1. Expose your application to the wider internet using [ngrok](http://ngrok.com). You can click
   [here](#expose-the-application-to-the-wider-internet) for more details. This step
   is important because the application won't work as expected if you run it through
@@ -60,10 +61,11 @@ This project is build using [Express](http://expressjs.com/) web framework and d
   ```
   http://<sub-domain>.ngrok.io/directory/search
   ```
-  
+
   ![Configure SMS](http://howtodocs.s3.amazonaws.com/twilio-number-config-all-med.gif)
 
 ### How To Demo
+
 1. Text your twilio number the name "Thor".
 1. Should get the following response:
 
