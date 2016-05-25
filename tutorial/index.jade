@@ -27,13 +27,13 @@
     data-file='models/employee.js')
     :markdown
       ## Create an Employee Model
-    
-      The first thing we need is a collection of employees. We will be using [mongoose][ef6cf] for this. 
-      
+
+      The first thing we need is a collection of employees. We will be using [mongoose][ef6cf] for this.
+
       Our employee entity has a few fields for contact information, including their name, phone number, and a public URL containing an image of them.
-      
+
       Now, let's build a module for finding employees.
-      
+
       ---
 
       **See Also:**
@@ -47,24 +47,24 @@
     data-highlight='5-17')
     :markdown
       ## Search for an Employee by Name
-      
+
       The `employee-finder` module allows us to search the database for employees either by name or by their unique database identifier. When searching by name, we'll return a list of employees whose name might match a search query, or just one if we find an exact match. If we know the ID of the employee we're looking for, we can return it right away.
 
       We'll use this search functionality when responding to an SMS from a user, which we'll look at next.
 
   .step(
-    data-title='Receive an Incoming SMS', 
+    data-title='Receiving an Incoming SMS',
     data-file='routes/directory.js',
     data-highlight='10-11,15,26-32,39')
     :markdown
-      ## Receive an Incoming SMS
-      
+      ## Receiving an Incoming SMS
+
       When your number receives an SMS message, [Twilio will send an HTTP POST request to our application][webhook]. This will be handled by the `/directory/search/` route.
-      
+
       We check for the cookie and numeric input (line 15/more on that later) or perform a query for the desired employee. The results are packaged up as a [TwiML response][twiml] through `twiml-generator` module and sent back to Twilio and, in turn, the original sender of the SMS.
-      
+
       Let's take a closer look at building the response.
-      
+
       ---
 
       **See Also:**
@@ -75,16 +75,16 @@
       [twiml]: //www.twilio.com/docs/api/twiml
 
   .step(
-    data-title='Respond with a Single Match for an Employee Name',
+    data-title='Responding with a Single Match for an Employee Name',
     data-file='lib/twiml-generator.js',
     data-highlight='12-19')
     :markdown
-      ## Respond with a Single Match for an Employee Name
-    
+      ## Responding with a Single Match for an Employee Name
+
       Let's say it finds a single employee matching the text message. In this case, we simply write out a response that contains the employee's contact information, including a photo, making our response a MMS message.
-      
+
       A single matching employee isn't the only scenario, however.
-      
+
       ---
 
       **See Also:**
@@ -96,16 +96,16 @@
     data-highlight='6-10, 21-29')
     :markdown
       ## What If No Employee or Multiple Employees Match?
-    
+
       If we don't find any employees, we can simply return a "Not found" message.
-      
+
       What about multiple matches? For this case, we want to return a list of the matching employees' names along with an incrementing number the end user can use to make their selection. For example, if someone searched for "Man" they might get something like:
-      
+
       ```
       We found: 1-Spider-Man, 2-Iron Man
        - Reply with # of desired person
       ```
-      
+
       Let's see how do we store these options are stored next.
 
   .step(
@@ -114,39 +114,39 @@
     data-highlight='33-39')
     :markdown
       ## Caching List of Possible Matches
-      
+
       For the message text returned to the user, we build a numbered menu of possible matches.
-      
+
       Our app needs to remember &mdash; between SMS messages from the user &mdash; the mapping of the 1, 2, 3 selection numbers to the actual unique ID's of employees. You will notice we are placing them in a cookie, which [Twilio will send back with every HTTP request to our application][twcookies].
-      
+
       Now let's look at how to handle the user's response to this menu of choices.
-      
+
       ---
 
       **See Also:**
       * [How Do Twilio Cookies Work?][twcookies]
       * [Express Cookies Overview](//expressjs.com/en/api.html#res.cookie)
-      
+
       [twcookies]: //www.twilio.com/help/faq/twilio-basics/how-do-twilio-cookies-work
 
   .step(
-    data-title='Return Employee Contact Information by Number Choice',
+    data-title="Returning Employee's Contact Information by Number Choice",
     data-file='routes/directory.js',
     data-highlight='15-25')
     :markdown
-      ## Return Employee Contact Information by Number Choice
-    
+      ## Returning Employee's Contact Information by Number Choice
+
       When we receive an SMS message, we check whether:
-      
+
       * The body of the text is, in fact, a number.
       * A cookie exists with the mapping of numbers to id's.
-      
+
       If any of those checks fail, then we'll simply proceed with our typical name lookup.
-      
+
       Otherwise, it will check if the chosen option exists in the cookie. If it does, we return the single employee that matches their selection.
-      
+
       Only thing left to do is celebrate.
-      
+
       ![winning](//howtodocs.s3.amazonaws.com/employee-directory/win.gif)
 
   .step(
@@ -171,4 +171,4 @@
 
       Thanks for checking this tutorial out! If you have any feedback
       to share with us, we'd love to hear it.
-      [Contact support](//www.twilio.com/help/contact) to let us know what you think.
+      [Contact the Twilio Developer Education Team](mailto:deved-oss@twilio.com) to let us know what you think.
