@@ -26,7 +26,7 @@ to a <a href="//www.twilio.com/help/faq/phone-numbers">Twilio Number</a></p>
 <li><a href="//www.twilio.com/docs/libraries/node">Twilio Node Helper Library</a></li>
 </ul>
 </div><div data-title="Create an Employee Model" data-file="models/employee.js" class="step"><h2 id="create-an-employee-model">Create an Employee Model</h2>
-<p>The first thing we need is a collection of employees. We will be using <a href="//mongoosejs.com">mongoose</a> for this. </p>
+<p>The first thing we need is a collection of employees. We will be using <a href="//mongoosejs.com">mongoose</a> for this.</p>
 <p>Our employee entity has a few fields for contact information, including their name, phone number, and a public URL containing an image of them.</p>
 <p>Now, let&#39;s build a module for finding employees.</p>
 <hr>
@@ -37,7 +37,7 @@ to a <a href="//www.twilio.com/help/faq/phone-numbers">Twilio Number</a></p>
 </div><div data-title="Search for an Employee by Name" data-file="lib/employee-finder.js" data-highlight="5-17" class="step"><h2 id="search-for-an-employee-by-name">Search for an Employee by Name</h2>
 <p>The <code>employee-finder</code> module allows us to search the database for employees either by name or by their unique database identifier. When searching by name, we&#39;ll return a list of employees whose name might match a search query, or just one if we find an exact match. If we know the ID of the employee we&#39;re looking for, we can return it right away.</p>
 <p>We&#39;ll use this search functionality when responding to an SMS from a user, which we&#39;ll look at next.</p>
-</div><div data-title="Receive an Incoming SMS" data-file="routes/directory.js" data-highlight="10-11,15,26-32,39" class="step"><h2 id="receive-an-incoming-sms">Receive an Incoming SMS</h2>
+</div><div data-title="Receiving an Incoming SMS" data-file="routes/directory.js" data-highlight="10-11,15,26-32,39" class="step"><h2 id="receiving-an-incoming-sms">Receiving an Incoming SMS</h2>
 <p>When your number receives an SMS message, <a href="//www.twilio.com/docs/api/twiml/sms/twilio_request">Twilio will send an HTTP POST request to our application</a>. This will be handled by the <code>/directory/search/</code> route.</p>
 <p>We check for the cookie and numeric input (line 15/more on that later) or perform a query for the desired employee. The results are packaged up as a <a href="//www.twilio.com/docs/api/twiml">TwiML response</a> through <code>twiml-generator</code> module and sent back to Twilio and, in turn, the original sender of the SMS.</p>
 <p>Let&#39;s take a closer look at building the response.</p>
@@ -47,7 +47,7 @@ to a <a href="//www.twilio.com/help/faq/phone-numbers">Twilio Number</a></p>
 <li><a href="//www.twilio.com/docs/api/twiml/sms/twilio_request">How Twilio Passes Data to Your Application</a></li>
 <li><a href="//www.twilio.com/docs/api/twiml">TwiML: The Twilio Markup Language</a></li>
 </ul>
-</div><div data-title="Respond with a Single Match for an Employee Name" data-file="lib/twiml-generator.js" data-highlight="12-19" class="step"><h2 id="respond-with-a-single-match-for-an-employee-name">Respond with a Single Match for an Employee Name</h2>
+</div><div data-title="Responding with a Single Match for an Employee Name" data-file="lib/twiml-generator.js" data-highlight="12-19" class="step"><h2 id="responding-with-a-single-match-for-an-employee-name">Responding with a Single Match for an Employee Name</h2>
 <p>Let&#39;s say it finds a single employee matching the text message. In this case, we simply write out a response that contains the employee&#39;s contact information, including a photo, making our response a MMS message.</p>
 <p>A single matching employee isn&#39;t the only scenario, however.</p>
 <hr>
@@ -71,7 +71,7 @@ to a <a href="//www.twilio.com/help/faq/phone-numbers">Twilio Number</a></p>
 <li><a href="//www.twilio.com/help/faq/twilio-basics/how-do-twilio-cookies-work">How Do Twilio Cookies Work?</a></li>
 <li><a href="//expressjs.com/en/api.html#res.cookie">Express Cookies Overview</a></li>
 </ul>
-</div><div data-title="Return Employee Contact Information by Number Choice" data-file="routes/directory.js" data-highlight="15-25" class="step"><h2 id="return-employee-contact-information-by-number-choice">Return Employee Contact Information by Number Choice</h2>
+</div><div data-title="Returning Employee's Contact Information by Number Choice" data-file="routes/directory.js" data-highlight="15-25" class="step"><h2 id="returning-employee-s-contact-information-by-number-choice">Returning Employee&#39;s Contact Information by Number Choice</h2>
 <p>When we receive an SMS message, we check whether:</p>
 <ul>
 <li>The body of the text is, in fact, a number.</li>
@@ -92,7 +92,7 @@ tutorials:</p>
 <p>Learn how to implement ETA Notifications using Express and Twilio.</p>
 <p>Thanks for checking this tutorial out! If you have any feedback
 to share with us, we&#39;d love to hear it.
-<a href="//www.twilio.com/help/contact">Contact support</a> to let us know what you think.</p>
+<a href="mailto:deved-oss@twilio.com">Contact the Twilio Developer Education Team</a> to let us know what you think.</p>
 </div></div>
 <div class="saurus-files" style="display:none;"><textarea class="saurus-file" data-file="models/employee.js" data-mode="javascript">J3VzZSBzdHJpY3QnOwoKdmFyIG1vbmdvb3NlID0gcmVxdWlyZSgnbW9uZ29vc2UnKTsKCnZhciBFbXBsb3llZSA9IG5ldyBtb25nb29zZS5TY2hlbWEoewogIGZ1bGxOYW1lOiBTdHJpbmcsCiAgZW1haWw6IFN0cmluZywKICBwaG9uZU51bWJlcjogU3RyaW5nLAogIGltYWdlVXJsOiBTdHJpbmcKfSk7Cgptb2R1bGUuZXhwb3J0cyA9IG1vbmdvb3NlLm1vZGVsKCdlbXBsb3llZScsIEVtcGxveWVlKTsK</textarea>
 <textarea class="saurus-file" data-file="lib/employee-finder.js" data-mode="javascript">J3VzZSBzdHJpY3QnOwoKdmFyIEVtcGxveWVlID0gcmVxdWlyZSgnLi4vbW9kZWxzL2VtcGxveWVlJyk7Cgp2YXIgZmluZEJ5TmFtZSA9IGZ1bmN0aW9uKG5hbWUsIGNhbGxiYWNrKSB7CiAgRW1wbG95ZWUuZmluZCh7CiAgICAiZnVsbE5hbWUiOiB7CiAgICAgICIkcmVnZXgiOiBuYW1lLCAiJG9wdGlvbnMiOiAiaSIKICAgIH0KICB9LCBjYWxsYmFjayk7Cn07Cgp2YXIgZmluZEJ5SWQgPSBmdW5jdGlvbihpZCwgY2FsbGJhY2spIHsKICBFbXBsb3llZS5maW5kT25lKHsKICAgICJfaWQiOiBpZAogIH0sIGNhbGxiYWNrKTsKfTsKCm1vZHVsZS5leHBvcnRzLmZpbmRCeU5hbWUgPSBmaW5kQnlOYW1lOwoKbW9kdWxlLmV4cG9ydHMuZmluZEJ5SWQgPSBmaW5kQnlJZDsK</textarea>
