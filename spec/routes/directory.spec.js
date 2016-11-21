@@ -60,9 +60,9 @@ describe('directory route', function () {
           var $ = cheerio.load(res.text);
           expect($('message').text()).to.equal(
 `We found multiple people, reply with:
-1 for Thor Girl
-2 for Frog Thor
-3 for Thor
+1 for Frog Thor
+2 for Thor
+3 for Thor Girl
 Or start over`
           );
           done();
