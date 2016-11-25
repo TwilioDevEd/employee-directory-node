@@ -3,7 +3,7 @@
 var mongoose = require('mongoose')
   , config = require('./config')
   , Employee = require('./models/employee')
-  , employees = require('./data')
+  , employees = require('./employees')
   , _ = require('underscore');
 
 mongoose.connect(config.dbConnection, function(err) {
