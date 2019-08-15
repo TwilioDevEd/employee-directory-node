@@ -41,7 +41,7 @@
     "mongoose": "^4.4.14",
     "morgan": "~1.6.1",
     "pug": "^2.0.0-alpha6",
-    "serve-favicon": "~2.3.0",
+    "serve-favicon": "~2.5.0",
     "twilio": "~3.0.0-rc.16",
     "underscore": "^1.8.3"
   },
