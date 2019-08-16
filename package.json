@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
-    "cheerio": "^0.19.0",
+    "cheerio": "^0.22.0",
     "jshint": "^2.9.2",
     "mocha": "^2.3.4",
     "supertest": "^1.1.0"
