@@ -4,7 +4,7 @@
 
 # Employee Directory
 
-[![Build Status](https://travis-ci.org/TwilioDevEd/employee-directory-node.svg?branch=master)](https://travis-ci.org/TwilioDevEd/employee-directory-node)
+[![Node.js CI](https://github.com/TwilioDevEd/employee-directory-node/actions/workflows/node.js.yml/badge.svg)](https://github.com/TwilioDevEd/employee-directory-node/actions/workflows/node.js.yml)
 
 Use Twilio to accept SMS messages and turn them into queries against a database. This example functions as an Employee Directory where a mobile phone user can send a text message with a partial string of a person's name and it will return their picture and contact information (e-mail address and phone number).
 
