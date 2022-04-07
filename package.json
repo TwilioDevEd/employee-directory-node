@@ -42,7 +42,7 @@
     "morgan": "~1.6.1",
     "pug": "^2.0.0-alpha6",
     "serve-favicon": "~2.3.0",
-    "twilio": "~3.0.0-rc.16",
+    "twilio": "~3.76.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
